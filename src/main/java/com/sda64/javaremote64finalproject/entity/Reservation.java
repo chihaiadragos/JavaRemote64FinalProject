@@ -1,6 +1,7 @@
 package com.sda64.javaremote64finalproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sda64.javaremote64finalproject.enums.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -32,4 +33,7 @@ public class Reservation {
     private Branch branch;
 
     private Double amount;
+    @Enumerated(EnumType.STRING)
+    private ReservationStatus reservationStatus;
+
 }

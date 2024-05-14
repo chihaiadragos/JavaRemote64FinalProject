@@ -1,6 +1,7 @@
 package com.sda64.javaremote64finalproject.dto;
 
 import com.sda64.javaremote64finalproject.entity.Branch;
+import com.sda64.javaremote64finalproject.enums.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,4 +20,5 @@ public class ReservationDto {
     private LocalDate dateTo;
     private BranchDto branch;
     private Double amount;
+    private ReservationStatus reservationStatus;
 }
