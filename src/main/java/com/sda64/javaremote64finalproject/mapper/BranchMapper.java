@@ -33,13 +33,14 @@ public class BranchMapper implements Mapper<Branch, BranchDto> {
 
         if (dto.getId() != null) {
             branch = branchRepository.findById(dto.getId()).orElse(new Branch());
+
         } else {
             branch = new Branch();
         }
+
         branch.setId(dto.getId());
         branch.setCity(dto.getCity());
         branch.setAddress(dto.getAddress());
-
         return branch;
     }
 }

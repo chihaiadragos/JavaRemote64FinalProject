@@ -1,0 +1,41 @@
+TODO:
+    AUTHENTIFICATION_CONTROLLER: /api/auth
+    -REGISTER: /register
+    -LOGIN: /login
+    BRANCH_CONTROLLER: /branch
+    -CREATE: /create
+    -GET BY ID: /id
+    -UPDATE: /update
+    -GET ALL:
+    CAR_CONTROLLER: /car
+    -CREATE: /create
+    -GET BY ID: /id
+    -UPDATE: /update
+    -DELETE: /id
+    -GET ALL:
+    -GET BY BODY TYPE AND COLOR: /getbybodyandcolor
+    -GET BY BRANCH: /getbybranchid/id
+    -GET ALL AVAILABLE FOR PERIOD: /availablecarsduringperiod
+    CUSTOMER_CONTROLLER: /customer
+    -CREATE: /create
+    -GET BY ID: /id
+    -UPDATE: /update
+    -GET ALL: /customers
+    -ADD MONEY: /id/addmoney
+    -REMOVE MONEY: /id/removemoney
+    EMPLOYEE_CONTROLLER: /employee
+    -CREATE: /create
+    -GET BY ID: /id
+    -UPDATE: /update
+    -DELETE: /id
+    -GET ALL:
+    -GET ALL BY BRANCH: /getbybranchid/id
+    RESERVATION_CONTROLLER: /reservation
+    -CREATE: /create
+    -GET BY ID: /id
+    -UPDATE: /update
+    -DELETE: /id
+    -GET ALL:
+    -GET ALL BY CUSTOMER: /getbycustomerid/id
+    -GET ALL BY CAR: /getbycarid/id
+    -GET ALL BY BRANCH: /getbybranchid/id

@@ -31,7 +31,7 @@ public class CarController {
     @GetMapping("/{id}")
     public ResponseEntity<CarDto> getCar(@PathVariable Long id) throws EntityNotFoundException {
         CarDto carFound = carService.findById(id);
-        return new ResponseEntity<>(carFound, HttpStatus.FOUND);
+        return new ResponseEntity<>(carFound, HttpStatus.OK);
     }
 
     @PutMapping("/update")
