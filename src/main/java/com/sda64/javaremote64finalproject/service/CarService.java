@@ -39,7 +39,7 @@ public class CarService {
     public CarDto updateCar(CarDto carDto) throws EntityNotFoundException {
         Car entityCar = carRepository.findById(carDto.getId()).orElseThrow(() -> new EntityNotFoundException(String.format("Car with %s does not exist", carDto.getId())));
         entityCar.setBrand(carDto.getBrand());
-        if (carDto.getModel() != null && entityCar.getModel().equalsIgnoreCase(carDto.getModel())) {
+        if (carDto.getModel() != null && !entityCar.getModel().equalsIgnoreCase(carDto.getModel())) {
             entityCar.setModel(carDto.getModel());
         }
         if (carDto.getCarBodyType() != null && entityCar.getCarBodyType().compareTo(carDto.getCarBodyType()) != 0) {
