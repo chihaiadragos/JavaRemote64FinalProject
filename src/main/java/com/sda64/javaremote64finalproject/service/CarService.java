@@ -2,11 +2,13 @@ package com.sda64.javaremote64finalproject.service;
 
 import com.sda64.javaremote64finalproject.dto.CarDto;
 import com.sda64.javaremote64finalproject.dto.PeriodDto;
+import com.sda64.javaremote64finalproject.entity.Branch;
 import com.sda64.javaremote64finalproject.entity.Car;
 import com.sda64.javaremote64finalproject.entity.Reservation;
 import com.sda64.javaremote64finalproject.enums.CarBodyType;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.mapper.CarMapper;
+import com.sda64.javaremote64finalproject.repository.BranchRepository;
 import com.sda64.javaremote64finalproject.repository.CarRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +17,14 @@ import java.util.*;
 
 @Service
 public class CarService {
+    private final BranchRepository branchRepository;
     private final CarRepository carRepository;
     private final CarMapper carMapper;
     private final ReservationService reservationService;
 
     @Autowired
-    public CarService(CarRepository carRepository, CarMapper carMapper, ReservationService reservationService) {
+    public CarService(BranchRepository branchRepository, CarRepository carRepository, CarMapper carMapper, ReservationService reservationService) {
+        this.branchRepository = branchRepository;
         this.carRepository = carRepository;
         this.carMapper = carMapper;
         this.reservationService = reservationService;
@@ -37,7 +41,9 @@ public class CarService {
     }
 
     public CarDto updateCar(CarDto carDto) throws EntityNotFoundException {
-        Car entityCar = carRepository.findById(carDto.getId()).orElseThrow(() -> new EntityNotFoundException(String.format("Car with %s does not exist", carDto.getId())));
+        Car entityCar = carRepository
+                .findById(carDto.getId())
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Car with %s does not exist", carDto.getId())));
         entityCar.setBrand(carDto.getBrand());
         if (carDto.getModel() != null && !entityCar.getModel().equalsIgnoreCase(carDto.getModel())) {
             entityCar.setModel(carDto.getModel());
@@ -59,6 +65,14 @@ public class CarService {
         }
         if (carDto.getImageUrl() != null && !entityCar.getImageUrl().equals(carDto.getImageUrl())) {
             entityCar.setImageUrl(carDto.getImageUrl());
+        }
+        if (!entityCar.getBranch().getId().equals(carDto.getBranch().getId())) {
+            Optional<Branch> branch = branchRepository.findById(carDto.getBranch().getId());
+            if (branch.isPresent()) {
+                entityCar.setBranch(branch.get());
+            } else {
+                throw new EntityNotFoundException(String.format("Branch with id %s does not exist", carDto.getBranch().getId()));
+            }
         }
 
 
