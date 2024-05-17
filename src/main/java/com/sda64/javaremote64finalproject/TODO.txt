@@ -6,3 +6,4 @@ TODO:
     - toate masinile disponibile intr-o perioada [DONE]
     - cand fac o rezervare trebuie sa scad din soldul clientului suma din rezervare - [DONE]
     - cresc sold-ul sau sa o scad : /employee/addBalance/?suma SI /employee/substractBalance/?suma - [DONE]
+    -> adaugat la detalii masina un link "check true millage" pe campul de detail car la [millage]

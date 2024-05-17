@@ -3,6 +3,7 @@ package com.sda64.javaremote64finalproject.mapper;
 import com.sda64.javaremote64finalproject.dto.BranchDto;
 import com.sda64.javaremote64finalproject.dto.CarDto;
 import com.sda64.javaremote64finalproject.entity.Car;
+import com.sda64.javaremote64finalproject.enums.CarBodyType;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.repository.CarRepository;
 import com.sda64.javaremote64finalproject.service.BranchService;
@@ -52,7 +53,11 @@ public class CarMapper implements Mapper<Car, CarDto>{
         car.setId(dto.getId());
         car.setBrand(dto.getBrand());
         car.setModel(dto.getModel());
-        car.setCarBodyType(dto.getCarBodyType());
+        if (dto.getCarBodyType() == null) {
+            car.setCarBodyType(CarBodyType.SEDAN);
+        } else {
+            car.setCarBodyType(dto.getCarBodyType());
+        }
         car.setYear(dto.getYear());
         car.setColor(dto.getColor());
         car.setMileage(dto.getMileage());
