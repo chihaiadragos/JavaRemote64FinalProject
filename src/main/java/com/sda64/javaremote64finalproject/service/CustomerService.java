@@ -51,6 +51,9 @@ public class CustomerService {
         if (customerDto.getAddress() != null && !entityCustomer.getAddress().equals(customerDto.getAddress())) {
             entityCustomer.setAddress(customerDto.getAddress());
         }
+        if (customerDto.getImage() != null && !entityCustomer.getImage().equals(customerDto.getImage())) {
+            entityCustomer.setImage(customerDto.getImage());
+        }
         if (customerDto.getBalance() != null && !entityCustomer.getBalance().equals(customerDto.getBalance())) {
             entityCustomer.setBalance(customerDto.getBalance());
         }

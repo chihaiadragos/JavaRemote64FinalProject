@@ -22,6 +22,7 @@ public class User implements UserDetails {
     private Long id;
     private String email;
     private String password;
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
     @OneToOne(mappedBy = "user")
     @JoinColumn(name = "employee_id")

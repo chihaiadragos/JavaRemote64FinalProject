@@ -21,7 +21,10 @@ public class Customer {
     private Double balance;
     @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;
+    @Enumerated(EnumType.STRING)
     private AccountType accountType;
+    @Lob
+    private String image;
     @OneToOne
     private User user;
 }
