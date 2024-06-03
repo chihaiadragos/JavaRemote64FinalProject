@@ -31,7 +31,14 @@ public class CustomerService {
     }
 
     public CustomerDto findById(Long id) throws EntityNotFoundException {
-        Customer entityCustomer = customerRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("Customer with %s does not exist", id)));
+        Customer entityCustomer = customerRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Customer with %s does not exist", id)));
+        return customerMapper.convertToDto(entityCustomer);
+    }
+
+    public CustomerDto findByUserId(Long id) {
+        Customer entityCustomer = customerRepository.findByUserId(id);
         return customerMapper.convertToDto(entityCustomer);
     }
 

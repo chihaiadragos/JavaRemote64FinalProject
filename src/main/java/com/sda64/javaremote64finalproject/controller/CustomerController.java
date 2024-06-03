@@ -32,7 +32,13 @@ public class CustomerController {
     @GetMapping("/{id}")
     public ResponseEntity<CustomerDto> getCustomer(@PathVariable Long id) throws EntityNotFoundException {
         CustomerDto customerFound = customerService.findById(id);
-        return new ResponseEntity<>(customerFound, HttpStatus.FOUND);
+        return new ResponseEntity<>(customerFound, HttpStatus.OK);
+    }
+
+    @GetMapping("/userid/{id}")
+    public ResponseEntity<CustomerDto> getCustomerByUserId(@PathVariable Long id) {
+        CustomerDto customerFound = customerService.findByUserId(id);
+        return new ResponseEntity<>(customerFound, HttpStatus.OK);
     }
 
     @PutMapping("/update")
