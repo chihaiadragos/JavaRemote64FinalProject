@@ -4,6 +4,7 @@ import com.sda64.javaremote64finalproject.enums.AccountType;
 import jakarta.persistence.*;
 import lombok.Data;
 
+import java.io.File;
 import java.util.List;
 
 @Entity
@@ -21,8 +22,6 @@ public class Customer {
     private Double balance;
     @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;
-    @Enumerated(EnumType.STRING)
-    private AccountType accountType;
     @Lob
     private String image;
     @OneToOne
