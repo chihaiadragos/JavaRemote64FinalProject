@@ -80,6 +80,7 @@ public class AuthenticationService {
         var jwtToken = jwtService.generateToken(user);
         return AuthenticationResponse.builder()
                 .accountType(user.getAccountType())
+                .id(user.getId())
                 .fullName(user.getFullName())
                 .token(jwtToken)
                 .build();
