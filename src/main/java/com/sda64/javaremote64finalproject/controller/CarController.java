@@ -60,7 +60,7 @@ public class CarController {
     }
     //best practice "/getallcars" <- nu camel case, se scriu cu litere mici
     //endpointurile mele sunt search by payload ...
-    @GetMapping("/availablecarsduringperiod")
+    @PostMapping("/availablecarsduringperiod")
     public ResponseEntity<List<CarDto>> getAvailableCars(@RequestBody PeriodDto periodDto) throws EntityNotFoundException {
         return new ResponseEntity<>(carService.getAvailableCars(periodDto), HttpStatus.OK);
     }

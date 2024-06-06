@@ -4,6 +4,7 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.web.multipart.MultipartFile;
 
 @NoArgsConstructor
 @AllArgsConstructor
@@ -15,6 +16,8 @@ public class CustomerDto {
     private String lastName;
     private String email;
     private String address;
-    private String image;
     private Double balance;
+
+    //todo
+    private MultipartFile image;
 }

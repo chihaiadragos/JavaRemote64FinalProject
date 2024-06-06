@@ -7,9 +7,13 @@ import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.exception.InvalidBodyException;
 import com.sda64.javaremote64finalproject.mapper.CustomerMapper;
 import com.sda64.javaremote64finalproject.repository.CustomerRepository;
+import com.sda64.javaremote64finalproject.util.ImageUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -59,7 +63,7 @@ public class CustomerService {
             entityCustomer.setAddress(customerDto.getAddress());
         }
         if (customerDto.getImage() != null && !entityCustomer.getImage().equals(customerDto.getImage())) {
-            entityCustomer.setImage(customerDto.getImage());
+            entityCustomer.setImage(customerDto.getImage().getBytes());
         }
         if (customerDto.getBalance() != null && !entityCustomer.getBalance().equals(customerDto.getBalance())) {
             entityCustomer.setBalance(customerDto.getBalance());
@@ -89,4 +93,32 @@ public class CustomerService {
         return customerMapper.convertToDto(customerRepository.save(entityCustomer));
     }
 
+
+    public String uploadImage(MultipartFile file) throws IOException {
+        Customer customer = customerRepository.save(Customer.builder()
+                .firstName(file.getOriginalFilename())
+                .email(file.getContentType())
+                .image(ImageUtils.compressImage(file.getBytes()))
+                .build());
+
+        if (customer != null) {
+            return "file uploaded successfully: " + file.getOriginalFilename();
+        }
+        return null;
+    }
+
+    public byte[] downloadImage(String firstName) {
+        Optional<Customer> dbCustomer = customerRepository.findByFirstName(firstName);
+        byte[] images = ImageUtils.decompressImage(dbCustomer.get().getImage());
+        return images;
+    }
+
+    public String updateCustomerImage(Long id, MultipartFile file) throws IOException {
+        Customer customer = customerRepository
+                .findByUserId(id);
+
+        customer.setImage(ImageUtils.decompressImage(file.getBytes()));
+        customerRepository.save(customer);
+        return "customer updated";
+    }
 }

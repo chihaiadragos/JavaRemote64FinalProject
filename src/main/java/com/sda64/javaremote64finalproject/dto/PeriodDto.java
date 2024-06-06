@@ -12,6 +12,6 @@ import java.time.LocalDate;
 @Getter
 @Setter
 public class PeriodDto {
-    private LocalDate startDate;
-    private LocalDate endDate;
+    private String startDate;
+    private String endDate;
 }

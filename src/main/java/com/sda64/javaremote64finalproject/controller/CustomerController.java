@@ -7,9 +7,12 @@ import com.sda64.javaremote64finalproject.exception.InvalidBodyException;
 import com.sda64.javaremote64finalproject.service.CustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.List;
 
 @RestController
@@ -59,5 +62,27 @@ public class CustomerController {
     @ExceptionHandler(value = InvalidBodyException.class)
     ResponseEntity<Object> handleIllegalRequests(InvalidBodyException ex) {
         return new ResponseEntity<>("Value is negative", HttpStatus.NOT_ACCEPTABLE);
+    }
+    @PostMapping("/testupload")
+    public ResponseEntity<?> uploadImage(@RequestParam("image")MultipartFile file) throws IOException {
+        String uploadImage = customerService.uploadImage(file);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .body(uploadImage);
+    }
+
+    @GetMapping("/testdownload/{firstName}")
+    public ResponseEntity<?> downloadImage(@PathVariable String firstName) {
+        byte[] imageData = customerService.downloadImage(firstName);
+        return ResponseEntity
+                .status(HttpStatus.OK)
+                .contentType(MediaType.valueOf("image/png"))
+                .body(imageData);
+    }
+
+    @PostMapping("/updateimage/{id}")
+    public ResponseEntity<?> updateCustomerImageTEST(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws IOException {
+        customerService.updateCustomerImage(id, file);
+        return new ResponseEntity<>("DRAGOS IS THE BEST PROGRAMMER", HttpStatus.OK);
     }
 }

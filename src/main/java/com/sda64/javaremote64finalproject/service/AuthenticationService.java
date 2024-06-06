@@ -13,13 +13,17 @@ import com.sda64.javaremote64finalproject.repository.BranchRepository;
 import com.sda64.javaremote64finalproject.repository.CustomerRepository;
 import com.sda64.javaremote64finalproject.repository.EmployeeRepository;
 import com.sda64.javaremote64finalproject.repository.UserRepository;
+import com.sda64.javaremote64finalproject.util.ImageUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.EnableCaching;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
+import java.nio.file.Files;
 import java.util.Optional;
 
 @Service
@@ -34,7 +38,7 @@ public class AuthenticationService {
     private final BranchRepository branchRepository;
     private final EmployeeRepository employeeRepository;
 
-    public AuthenticationResponse register(RegisterRequest request) throws EntityNotFoundException {
+    public AuthenticationResponse register(RegisterRequest request) throws EntityNotFoundException, IOException {
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -51,6 +55,10 @@ public class AuthenticationService {
             customer.setEmail(request.getEmail());
             customer.setBalance(0d);
             customer.setUser(user);
+
+            ClassPathResource imgFile = new ClassPathResource("static/idefes.png");
+            byte[] imageBytes = Files.readAllBytes(imgFile.getFile().toPath());
+            customer.setImage(ImageUtils.compressImage(imageBytes));
             customerRepository.save(customer);
         } else {
             Employee employee = new Employee();

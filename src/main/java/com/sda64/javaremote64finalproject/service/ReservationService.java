@@ -130,8 +130,10 @@ public class ReservationService {
 
     protected List<Reservation> findAllByPeriod(PeriodDto periodDto) {
 
-        LocalDate periodDtoFrom = periodDto.getStartDate();
-        LocalDate periodDtoTo = periodDto.getEndDate();
+
+
+        LocalDate periodDtoFrom = LocalDate.parse(periodDto.getStartDate());
+        LocalDate periodDtoTo = LocalDate.parse(periodDto.getEndDate());
 
 
         List<Reservation> reservationList = reservationRepository.findAll();
