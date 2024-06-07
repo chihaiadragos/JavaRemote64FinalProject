@@ -8,6 +8,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequestMapping("/branch")
 @CrossOrigin("http://localhost:4200/")
@@ -28,6 +30,10 @@ public class BranchController {
     public ResponseEntity<BranchDto> getBranch(@PathVariable Long id) throws EntityNotFoundException {
         BranchDto branchFound = branchService.findById(id);
         return new ResponseEntity<>(branchFound, HttpStatus.FOUND);
+    }
+    @GetMapping
+    public ResponseEntity<List<BranchDto>> getAllBranches() {
+        return new ResponseEntity<>(branchService.findAll(), HttpStatus.OK);
     }
 
     @PutMapping("/update")

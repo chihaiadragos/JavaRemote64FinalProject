@@ -53,6 +53,7 @@ public class AuthenticationService {
             customer.setLastName(request.getLastName());
             customer.setAddress(request.getAddress());
             customer.setEmail(request.getEmail());
+            customer.setAccountType(AccountType.CLIENT);
             customer.setBalance(0d);
             customer.setUser(user);
 
@@ -65,11 +66,11 @@ public class AuthenticationService {
             employee.setFirstName(request.getFirstName());
             employee.setLastName(request.getLastName());
             employee.setUser(user);
-            Optional<Branch> branchOptional = branchRepository.findById(request.getBranchId());
+            Optional<Branch> branchOptional = branchRepository.findByCity(request.getBranch());
             if (branchOptional.isPresent()) {
                 employee.setBranch(branchOptional.get());
             } else {
-                throw new EntityNotFoundException(String.format("Branch with id %s not found", request.getBranchId()));
+                throw new EntityNotFoundException(String.format("Branch from city %s not found", request.getBranch()));
             }
             employeeRepository.save(employee);
         }

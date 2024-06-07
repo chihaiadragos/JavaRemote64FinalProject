@@ -1,12 +1,18 @@
 package com.sda64.javaremote64finalproject.service;
 
 import com.sda64.javaremote64finalproject.dto.BranchDto;
+import com.sda64.javaremote64finalproject.dto.CarDto;
 import com.sda64.javaremote64finalproject.entity.Branch;
+import com.sda64.javaremote64finalproject.entity.Car;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.mapper.BranchMapper;
 import com.sda64.javaremote64finalproject.repository.BranchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class BranchService {
@@ -40,5 +46,20 @@ public class BranchService {
             entityBranch.setAddress(branchDto.getAddress());
         }
         return branchMapper.convertToDto(branchRepository.save(entityBranch));
+    }
+
+    public List<BranchDto> findAll() {
+        List<Branch> branchList = branchRepository.findAll();
+        List<BranchDto> branchDtoList = new ArrayList<>();
+        for (Branch branch : branchList) {
+            branchDtoList.add(branchMapper.convertToDto(branch));
+        }
+        return branchDtoList;
+    }
+
+    public BranchDto findByCity(String city) {
+        Optional<Branch> entityBranch = branchRepository
+                .findByCity(city);
+        return branchMapper.convertToDto(entityBranch.get());
     }
 }

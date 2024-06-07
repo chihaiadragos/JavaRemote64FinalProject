@@ -24,6 +24,7 @@ public class CustomerMapper implements Mapper<Customer, CustomerDto> {
         customerDto.setLastName(entity.getLastName());
         customerDto.setEmail(entity.getEmail());
         customerDto.setAddress(entity.getAddress());
+        customerDto.setAccountType(entity.getAccountType());
 //        customerDto.setImage(entity.getImage());
         customerDto.setBalance(entity.getBalance());
 

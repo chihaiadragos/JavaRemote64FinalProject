@@ -28,6 +28,7 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
         employeeDto.setId(entity.getId());
         employeeDto.setFirstName(entity.getFirstName());
         employeeDto.setLastName(entity.getLastName());
+        employeeDto.setEmail(employeeDto.getEmail());
         employeeDto.setBranch(branchMapper.convertToDto(entity.getBranch()));
 
         return employeeDto;
@@ -46,6 +47,7 @@ public class EmployeeMapper implements Mapper<Employee, EmployeeDto> {
         employee.setId(dto.getId());
         employee.setFirstName(dto.getFirstName());
         employee.setLastName(dto.getLastName());
+        employee.setEmail(dto.getEmail());
         if (dto.getBranch().getId() != null) {
             BranchDto branchDto = branchService.findById(dto.getBranch().getId());
             employee.setBranch(branchMapper.convertToEntity(branchDto));

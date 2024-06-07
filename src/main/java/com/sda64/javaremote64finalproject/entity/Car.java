@@ -2,6 +2,7 @@ package com.sda64.javaremote64finalproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.sda64.javaremote64finalproject.enums.CarBodyType;
+import com.sda64.javaremote64finalproject.enums.EntityStatus;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -29,6 +30,8 @@ public class Car {
     private Integer mileage;
 
     private Integer amount;
+    @Enumerated(EnumType.STRING)
+    private EntityStatus status;
 
     private String imageUrl;
 

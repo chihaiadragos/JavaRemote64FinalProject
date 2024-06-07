@@ -1,6 +1,7 @@
 package com.sda64.javaremote64finalproject.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.sda64.javaremote64finalproject.enums.EntityStatus;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,6 +18,8 @@ public class Branch {
     private Long id;
     private String city;
     private String address;
+    @Enumerated(EnumType.STRING)
+    private EntityStatus status;
 
     @OneToMany(mappedBy = "branch")
     @JsonIgnore

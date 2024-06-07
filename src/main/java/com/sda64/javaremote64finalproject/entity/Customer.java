@@ -25,6 +25,8 @@ public class Customer {
     private String lastName;
     private String email;
     private String address;
+    @Enumerated(EnumType.STRING)
+    private AccountType accountType;
     private Double balance;
     @OneToMany(mappedBy = "customer")
     private List<Reservation> reservations;

@@ -1,6 +1,7 @@
 package com.sda64.javaremote64finalproject.dto;
 
 import com.sda64.javaremote64finalproject.enums.CarBodyType;
+import com.sda64.javaremote64finalproject.enums.EntityStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -21,4 +22,5 @@ public class CarDto {
     private Integer amount;
     private String imageUrl;
     private BranchDto branch;
+    private EntityStatus status;
 }

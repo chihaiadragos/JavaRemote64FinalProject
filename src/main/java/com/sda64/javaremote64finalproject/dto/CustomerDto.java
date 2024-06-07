@@ -1,5 +1,6 @@
 package com.sda64.javaremote64finalproject.dto;
 
+import com.sda64.javaremote64finalproject.enums.AccountType;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -17,7 +18,9 @@ public class CustomerDto {
     private String email;
     private String address;
     private Double balance;
+    private AccountType accountType;
 
     //todo
-    private MultipartFile image;
+    private String image;
+//    private MultipartFile image;
 }
