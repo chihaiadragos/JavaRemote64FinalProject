@@ -4,6 +4,7 @@ import com.sda64.javaremote64finalproject.dto.BranchDto;
 import com.sda64.javaremote64finalproject.dto.CarDto;
 import com.sda64.javaremote64finalproject.entity.Branch;
 import com.sda64.javaremote64finalproject.entity.Car;
+import com.sda64.javaremote64finalproject.enums.EntityStatus;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.mapper.BranchMapper;
 import com.sda64.javaremote64finalproject.repository.BranchRepository;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class BranchService {
@@ -50,8 +52,22 @@ public class BranchService {
 
     public List<BranchDto> findAll() {
         List<Branch> branchList = branchRepository.findAll();
+
         List<BranchDto> branchDtoList = new ArrayList<>();
         for (Branch branch : branchList) {
+            branchDtoList.add(branchMapper.convertToDto(branch));
+        }
+        return branchDtoList;
+    }
+
+    public List<BranchDto> findAllAvailable() {
+        List<Branch> branchList = branchRepository.findAll();
+        List<Branch> availableBranches = branchList.stream()
+                .filter(branch -> branch.getStatus() == EntityStatus.AVAILABLE)
+                .toList();
+
+        List<BranchDto> branchDtoList = new ArrayList<>();
+        for (Branch branch : availableBranches) {
             branchDtoList.add(branchMapper.convertToDto(branch));
         }
         return branchDtoList;

@@ -2,6 +2,7 @@ package com.sda64.javaremote64finalproject.mapper;
 
 import com.sda64.javaremote64finalproject.dto.BranchDto;
 import com.sda64.javaremote64finalproject.entity.Branch;
+import com.sda64.javaremote64finalproject.enums.EntityStatus;
 import com.sda64.javaremote64finalproject.repository.BranchRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -41,6 +42,9 @@ public class BranchMapper implements Mapper<Branch, BranchDto> {
 //        branch.setId(dto.getId());
         branch.setCity(dto.getCity());
         branch.setAddress(dto.getAddress());
+        if (dto.getStatus() == null) {
+            branch.setStatus(EntityStatus.AVAILABLE);
+        }
         return branch;
     }
 }

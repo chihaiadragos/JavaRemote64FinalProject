@@ -35,6 +35,10 @@ public class BranchController {
     public ResponseEntity<List<BranchDto>> getAllBranches() {
         return new ResponseEntity<>(branchService.findAll(), HttpStatus.OK);
     }
+    @GetMapping("/available")
+    public ResponseEntity<List<BranchDto>> getAllAvailableBranches() {
+        return new ResponseEntity<>(branchService.findAllAvailable(), HttpStatus.OK);
+    }
 
     @PutMapping("/update")
     public ResponseEntity<BranchDto> updateBranch(@RequestBody BranchDto branchDto) throws EntityNotFoundException {
