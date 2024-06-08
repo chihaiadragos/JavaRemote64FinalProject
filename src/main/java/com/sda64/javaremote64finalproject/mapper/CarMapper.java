@@ -4,6 +4,7 @@ import com.sda64.javaremote64finalproject.dto.BranchDto;
 import com.sda64.javaremote64finalproject.dto.CarDto;
 import com.sda64.javaremote64finalproject.entity.Car;
 import com.sda64.javaremote64finalproject.enums.CarBodyType;
+import com.sda64.javaremote64finalproject.enums.EntityStatus;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.repository.CarRepository;
 import com.sda64.javaremote64finalproject.service.BranchService;
@@ -46,12 +47,12 @@ public class CarMapper implements Mapper<Car, CarDto>{
 
         Car car;
 
-        if (dto.getId() != null) {
+        if (dto.getId() != null && dto.getId() >= 0) {
             car = carRepository.findById(dto.getId()).orElse(new Car());
         } else {
             car = new Car();
         }
-        car.setId(dto.getId());
+//        car.setId(dto.getId());
         car.setBrand(dto.getBrand());
         car.setModel(dto.getModel());
         if (dto.getCarBodyType() == null) {
@@ -63,7 +64,11 @@ public class CarMapper implements Mapper<Car, CarDto>{
         car.setColor(dto.getColor());
         car.setMileage(dto.getMileage());
         car.setAmount(dto.getAmount());
-        car.setStatus(dto.getStatus());
+        if (dto.getStatus() == null) {
+            car.setStatus(EntityStatus.AVAILABLE);
+        } else {
+            car.setStatus(dto.getStatus());
+        }
         car.setImageUrl(dto.getImageUrl());
         if (dto.getBranch().getId() != null) {
             BranchDto branchDto = branchService.findById(dto.getBranch().getId());
