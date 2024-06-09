@@ -6,6 +6,7 @@ import com.sda64.javaremote64finalproject.entity.Branch;
 import com.sda64.javaremote64finalproject.entity.Car;
 import com.sda64.javaremote64finalproject.entity.Reservation;
 import com.sda64.javaremote64finalproject.enums.CarBodyType;
+import com.sda64.javaremote64finalproject.enums.EntityStatus;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.mapper.CarMapper;
 import com.sda64.javaremote64finalproject.repository.BranchRepository;
@@ -67,9 +68,6 @@ public class CarService {
         }
         if (carDto.getImageUrl() != null && !entityCar.getImageUrl().equals(carDto.getImageUrl())) {
             entityCar.setImageUrl(carDto.getImageUrl());
-        }
-        if (carDto.getStatus() != null && !entityCar.getStatus().equals(carDto.getStatus())) {
-            entityCar.setStatus(carDto.getStatus());
         }
         if (!entityCar.getBranch().getId().equals(carDto.getBranch().getId())) {
             Optional<Branch> branch = branchRepository.findById(carDto.getBranch().getId());

@@ -52,6 +52,7 @@ public class ReservationMapper implements Mapper<Reservation, ReservationDto> {
         reservationDto.setDateFrom(entity.getDateFrom());
         reservationDto.setDateTo(entity.getDateTo());
         reservationDto.setBranch(branchMapper.convertToDto(entity.getBranch()));
+//        reservationDto.setBranchReturn(branchMapper.convertToDto(entity.getBranchReturn()));
         reservationDto.setAmount(entity.getAmount());
         reservationDto.setReservationStatus(entity.getReservationStatus());
         return reservationDto;
@@ -62,7 +63,7 @@ public class ReservationMapper implements Mapper<Reservation, ReservationDto> {
 
         Reservation reservation;
 
-        if (dto.getId() != null) {
+        if (dto.getId() != null && dto.getId() >= 0) {
             reservation = reservationRepository.findById(dto.getId()).orElse(new Reservation());
         } else {
             reservation = new Reservation();
@@ -94,6 +95,14 @@ public class ReservationMapper implements Mapper<Reservation, ReservationDto> {
                 throw new EntityNotFoundException(String.format("Branch with id %s not found", dto.getBranch().getId()));
             }
         }
+//        if (dto.getBranchReturn().getId() != null) {
+//            Optional<Branch> branchDto = branchRepository.findById(dto.getBranchReturn().getId());
+//            if (branchDto.isPresent()) {
+//                reservation.setBranchReturn(branchDto.get());
+//            } else {
+//                throw new EntityNotFoundException(String.format("Branch with id %s not found", dto.getBranchReturn().getId()));
+//            }
+//        }
         reservation.setAmount(dto.getAmount());
         if (dto.getReservationStatus() == null) {
             reservation.setReservationStatus(ReservationStatus.PENDING);

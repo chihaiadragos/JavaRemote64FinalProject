@@ -32,6 +32,11 @@ public class Reservation {
     @JsonIgnore
     private Branch branch;
 
+//    @ManyToOne
+//    @JoinColumn(name = "branch_return_id")
+//    @JsonIgnore
+//    private Branch branchReturn;
+
     private Double amount;
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus;

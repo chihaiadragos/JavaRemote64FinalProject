@@ -29,7 +29,7 @@ public class BranchController {
     @GetMapping("/{id}")
     public ResponseEntity<BranchDto> getBranch(@PathVariable Long id) throws EntityNotFoundException {
         BranchDto branchFound = branchService.findById(id);
-        return new ResponseEntity<>(branchFound, HttpStatus.FOUND);
+        return new ResponseEntity<>(branchFound, HttpStatus.OK);
     }
     @GetMapping
     public ResponseEntity<List<BranchDto>> getAllBranches() {

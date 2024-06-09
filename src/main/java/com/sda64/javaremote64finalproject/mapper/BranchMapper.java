@@ -23,6 +23,7 @@ public class BranchMapper implements Mapper<Branch, BranchDto> {
         branchDto.setId(entity.getId());
         branchDto.setCity(entity.getCity());
         branchDto.setAddress(entity.getAddress());
+        branchDto.setStatus(entity.getStatus());
 
         return branchDto;
     }
