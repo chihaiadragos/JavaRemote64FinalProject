@@ -38,6 +38,7 @@ public class Reservation {
 //    private Branch branchReturn;
 
     private Double amount;
+    @Column(name = "reservation_status")
     @Enumerated(EnumType.STRING)
     private ReservationStatus reservationStatus;
 

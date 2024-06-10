@@ -65,7 +65,7 @@ public class ReservationService {
         Reservation entityReservation = reservationRepository
                 .findById(reservationDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Reservation with %s does not exist", reservationDto.getId())));
-        if (!entityReservation.getCar().getId().equals(reservationDto.getCar().getId())) {
+        if (reservationDto.getCar() != null && !entityReservation.getCar().getId().equals(reservationDto.getCar().getId())) {
             Optional<Car> car = carRepository.findById(reservationDto.getCar().getId());
             if (car.isPresent()) {
                 entityReservation.setCar(car.get());
@@ -79,9 +79,10 @@ public class ReservationService {
         if (reservationDto.getDateTo() != null && !entityReservation.getDateTo().equals(reservationDto.getDateTo())) {
             entityReservation.setDateTo(reservationDto.getDateTo());
         }
-        if (reservationDto.getReservationStatus() != null && !entityReservation.getReservationStatus().equals(reservationDto.getReservationStatus())) {
-            entityReservation.setReservationStatus(reservationDto.getReservationStatus());
-        }
+//        if (reservationDto.getReservationStatus() != null && !entityReservation.getReservationStatus().equals(reservationDto.getReservationStatus())) {
+//            entityReservation.setReservationStatus(reservationDto.getReservationStatus());
+//        }
+        entityReservation.setReservationStatus(reservationDto.getReservationStatus());
         return reservationMapper.convertToDto(reservationRepository.save(entityReservation));
     }
 
@@ -137,8 +138,12 @@ public class ReservationService {
 
 
         List<Reservation> reservationList = reservationRepository.findAll();
+        List<Reservation> availableReservations = reservationList.stream()
+                .filter(reservation ->  reservation.getReservationStatus() == ReservationStatus.DECLINED ||
+                                        reservation.getReservationStatus() == ReservationStatus.COMPLETED)
+                .toList();
 
-        return reservationList.stream().filter(reservation -> reservation.getDateFrom().isEqual(periodDtoFrom)
+        return availableReservations.stream().filter(reservation -> reservation.getDateFrom().isEqual(periodDtoFrom)
                 || reservation.getDateFrom().isEqual(periodDtoTo)
                 || reservation.getDateTo().isEqual(periodDtoFrom)
                 || reservation.getDateTo().isEqual(periodDtoTo)

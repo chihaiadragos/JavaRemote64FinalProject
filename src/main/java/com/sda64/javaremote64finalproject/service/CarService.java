@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class CarService {
@@ -45,7 +46,8 @@ public class CarService {
         Car entityCar = carRepository
                 .findById(carDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Car with %s does not exist", carDto.getId())));
-        entityCar.setBrand(carDto.getBrand());
+
+
         if (carDto.getModel() != null && !entityCar.getModel().equalsIgnoreCase(carDto.getModel())) {
             entityCar.setModel(carDto.getModel());
         } else {
@@ -69,7 +71,12 @@ public class CarService {
         if (carDto.getImageUrl() != null && !entityCar.getImageUrl().equals(carDto.getImageUrl())) {
             entityCar.setImageUrl(carDto.getImageUrl());
         }
-        if (!entityCar.getBranch().getId().equals(carDto.getBranch().getId())) {
+
+        if (carDto.getStatus() != null && !entityCar.getStatus().equals(carDto.getStatus())) {
+            entityCar.setStatus(carDto.getStatus());
+        }
+
+        if (carDto.getBranch() != null && !entityCar.getBranch().getId().equals(carDto.getBranch().getId())) {
             Optional<Branch> branch = branchRepository.findById(carDto.getBranch().getId());
             if (branch.isPresent()) {
                 entityCar.setBranch(branch.get());
@@ -96,6 +103,20 @@ public class CarService {
         }
         return carDtoList;
     }
+
+    public List<CarDto> findAllAvailable() {
+        List<Car> carList = carRepository.findAll();
+        List<CarDto> carDtoList = new ArrayList<>();
+
+        List<Car> availableCars = carList.stream()
+                .filter(car -> car.getStatus() == EntityStatus.AVAILABLE)
+                .toList();
+
+        for (Car car : availableCars) {
+            carDtoList.add(carMapper.convertToDto(car));
+        }
+        return carDtoList;
+    }
     public List<CarDto> findAllByCarBodyTypeAndColor(CarBodyType carBodyType, String color) {
         List<Car> carList = carRepository.findAllByCarBodyTypeAndColor(carBodyType, color);
         List<CarDto> carDtoList = new ArrayList<>();
@@ -113,7 +134,7 @@ public class CarService {
         return carDtoList;
     }
     public List<CarDto> getAvailableCars(PeriodDto periodDto) {
-        List<CarDto> carDtoList = findAll();
+        List<CarDto> carDtoList = findAllAvailable();
         Set<CarDto> availableCars = new HashSet<>(carDtoList);
 
         List<Reservation> reservationListFromPeriod = reservationService.findAllByPeriod(periodDto);

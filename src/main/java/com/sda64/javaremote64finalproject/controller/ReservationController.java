@@ -29,7 +29,7 @@ public class ReservationController {
     @PostMapping("/create")
     public ResponseEntity<ReservationDto> createReservation(@RequestBody ReservationDto reservationDto) throws EntityNotFoundException, InsuficientFoundsException {
         ReservationDto createdReservationDto = reservationService.createReservation(reservationDto);
-        return new ResponseEntity<>(createdReservationDto, HttpStatus.CREATED);
+        return new ResponseEntity<>(createdReservationDto, HttpStatus.OK);
     }
 
     @GetMapping("/{id}")

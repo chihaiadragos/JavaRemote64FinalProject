@@ -50,6 +50,11 @@ public class CarController {
     public ResponseEntity<List<CarDto>> getAllCars() {
         return new ResponseEntity<>(carService.findAll(), HttpStatus.OK);
     }
+
+    @GetMapping("/availablecars")
+    public ResponseEntity<List<CarDto>> getAllAvailableCarss() {
+        return new ResponseEntity<>(carService.findAllAvailable(), HttpStatus.OK);
+    }
     @GetMapping("/getByBodyAndColor")
     public ResponseEntity<List<CarDto>> getAllCarsByCarBodyTypeAndColor(@RequestBody CarDto carDto) {
         return new ResponseEntity<>(carService.findAllByCarBodyTypeAndColor(carDto.getCarBodyType(), carDto.getColor()), HttpStatus.OK);

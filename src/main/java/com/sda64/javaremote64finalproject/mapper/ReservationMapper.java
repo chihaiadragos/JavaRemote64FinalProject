@@ -106,8 +106,6 @@ public class ReservationMapper implements Mapper<Reservation, ReservationDto> {
         reservation.setAmount(dto.getAmount());
         if (dto.getReservationStatus() == null) {
             reservation.setReservationStatus(ReservationStatus.PENDING);
-        } else {
-            reservation.setReservationStatus(dto.getReservationStatus());
         }
         return reservation;
     }
