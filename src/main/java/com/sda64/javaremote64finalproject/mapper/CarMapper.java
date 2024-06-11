@@ -34,7 +34,6 @@ public class CarMapper implements Mapper<Car, CarDto>{
         carDto.setYear(entity.getYear());
         carDto.setColor(entity.getColor());
         carDto.setMileage(entity.getMileage());
-//        carDto.setStatus(entity.getStatus());
         carDto.setAmount(entity.getAmount());
         carDto.setImageUrl(entity.getImageUrl());
         carDto.setBranch(branchMapper.convertToDto(entity.getBranch()));
@@ -52,7 +51,6 @@ public class CarMapper implements Mapper<Car, CarDto>{
         } else {
             car = new Car();
         }
-//        car.setId(dto.getId());
         car.setBrand(dto.getBrand());
         car.setModel(dto.getModel());
         if (dto.getCarBodyType() == null) {

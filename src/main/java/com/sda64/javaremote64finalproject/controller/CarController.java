@@ -52,7 +52,7 @@ public class CarController {
     }
 
     @GetMapping("/availablecars")
-    public ResponseEntity<List<CarDto>> getAllAvailableCarss() {
+    public ResponseEntity<List<CarDto>> getAllAvailableCars() {
         return new ResponseEntity<>(carService.findAllAvailable(), HttpStatus.OK);
     }
     @GetMapping("/getByBodyAndColor")

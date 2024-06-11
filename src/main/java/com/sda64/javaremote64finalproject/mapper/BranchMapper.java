@@ -24,23 +24,17 @@ public class BranchMapper implements Mapper<Branch, BranchDto> {
         branchDto.setCity(entity.getCity());
         branchDto.setAddress(entity.getAddress());
         branchDto.setStatus(entity.getStatus());
-
         return branchDto;
     }
 
     @Override
     public Branch convertToEntity(BranchDto dto) {
-
         Branch branch;
-
         if (dto.getId() != null && dto.getId() >= 0) {
             branch = branchRepository.findById(dto.getId()).orElse(new Branch());
-
         } else {
             branch = new Branch();
         }
-
-//        branch.setId(dto.getId());
         branch.setCity(dto.getCity());
         branch.setAddress(dto.getAddress());
         if (dto.getStatus() == null) {

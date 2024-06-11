@@ -47,6 +47,9 @@ public class BranchService {
         if (branchDto.getAddress() != null && !entityBranch.getAddress().equals(branchDto.getAddress())) {
             entityBranch.setAddress(branchDto.getAddress());
         }
+        if (branchDto.getStatus() != null && !entityBranch.getStatus().equals(branchDto.getStatus())) {
+            entityBranch.setStatus(branchDto.getStatus());
+        }
         return branchMapper.convertToDto(branchRepository.save(entityBranch));
     }
 

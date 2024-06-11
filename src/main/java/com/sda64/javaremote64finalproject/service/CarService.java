@@ -48,6 +48,12 @@ public class CarService {
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Car with %s does not exist", carDto.getId())));
 
 
+        if (carDto.getBrand() != null && !entityCar.getBrand().equalsIgnoreCase(carDto.getBrand())) {
+            entityCar.setBrand(carDto.getBrand());
+        } else {
+            entityCar.setModel("unknown");
+        }
+
         if (carDto.getModel() != null && !entityCar.getModel().equalsIgnoreCase(carDto.getModel())) {
             entityCar.setModel(carDto.getModel());
         } else {
@@ -90,7 +96,9 @@ public class CarService {
     }
 
     public CarDto deleteCar(Long id) throws EntityNotFoundException {
-        Car entityCar = carRepository.findById(id).orElseThrow(() -> new EntityNotFoundException(String.format("Car with %s does not exist", id)));
+        Car entityCar = carRepository
+                .findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(String.format("Car with %s does not exist", id)));
         carRepository.deleteById(id);
         return carMapper.convertToDto(entityCar);
     }
