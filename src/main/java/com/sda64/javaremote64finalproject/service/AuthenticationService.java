@@ -8,6 +8,7 @@ import com.sda64.javaremote64finalproject.entity.Customer;
 import com.sda64.javaremote64finalproject.entity.Employee;
 import com.sda64.javaremote64finalproject.entity.User;
 import com.sda64.javaremote64finalproject.enums.AccountType;
+import com.sda64.javaremote64finalproject.exception.EmailAlreadyExistException;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.repository.BranchRepository;
 import com.sda64.javaremote64finalproject.repository.CustomerRepository;
@@ -27,7 +28,7 @@ import java.nio.file.Files;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+//@RequiredArgsConstructor
 @EnableCaching
 public class AuthenticationService {
     private final UserRepository userRepository;
@@ -38,7 +39,22 @@ public class AuthenticationService {
     private final BranchRepository branchRepository;
     private final EmployeeRepository employeeRepository;
 
-    public AuthenticationResponse register(RegisterRequest request) throws EntityNotFoundException, IOException {
+    public AuthenticationService(UserRepository userRepository, PasswordEncoder passwordEncoder, JwtService jwtService, AuthenticationManager authenticationManager, CustomerRepository customerRepository, BranchRepository branchRepository, EmployeeRepository employeeRepository) {
+        this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
+        this.jwtService = jwtService;
+        this.authenticationManager = authenticationManager;
+        this.customerRepository = customerRepository;
+        this.branchRepository = branchRepository;
+        this.employeeRepository = employeeRepository;
+    }
+
+    public void register(RegisterRequest request) throws EntityNotFoundException, IOException, EmailAlreadyExistException {
+
+        if (userRepository.findByEmail(request.getEmail()).isPresent()) {
+            throw new EmailAlreadyExistException(String.format("User with email %s already exist", request.getEmail()));
+        }
+
         var user = User.builder()
                 .email(request.getEmail())
                 .password(passwordEncoder.encode(request.getPassword()))
@@ -65,6 +81,7 @@ public class AuthenticationService {
             Employee employee = new Employee();
             employee.setFirstName(request.getFirstName());
             employee.setLastName(request.getLastName());
+            employee.setEmail(request.getEmail());
             employee.setUser(user);
             Optional<Branch> branchOptional = branchRepository.findByCity(request.getBranch());
             if (branchOptional.isPresent()) {
@@ -75,18 +92,26 @@ public class AuthenticationService {
             employeeRepository.save(employee);
         }
 
-        return AuthenticationResponse.builder().token(jwtToken).build();
+//        return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    public AuthenticationResponse authenticate(LoginRequest request) {
-        authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        request.getEmail(),
-                        request.getPassword()
-                )
-        );
+    public AuthenticationResponse authenticate(LoginRequest request) throws EntityNotFoundException {
+
+
+        try {
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(
+                            request.getEmail(),
+                            request.getPassword()
+                    )
+            );
+        } catch (Exception e){
+            throw new EntityNotFoundException(e.getMessage());
+        }
+
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
+
         return AuthenticationResponse.builder()
                 .accountType(user.getAccountType())
                 .id(user.getId())
