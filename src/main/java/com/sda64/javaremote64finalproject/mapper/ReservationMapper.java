@@ -54,7 +54,7 @@ public class ReservationMapper implements Mapper<Reservation, ReservationDto> {
         reservationDto.setBranch(branchMapper.convertToDto(entity.getBranch()));
 //        reservationDto.setBranchReturn(branchMapper.convertToDto(entity.getBranchReturn()));
         reservationDto.setAmount(entity.getAmount());
-        reservationDto.setReservationStatus(entity.getReservationStatus());
+        reservationDto.setStatus(entity.getReservationStatus());
         return reservationDto;
     }
 
@@ -104,8 +104,8 @@ public class ReservationMapper implements Mapper<Reservation, ReservationDto> {
 //            }
 //        }
         reservation.setAmount(dto.getAmount());
-        if (dto.getReservationStatus() == null) {
-            reservation.setReservationStatus(ReservationStatus.PENDING);
+        if (dto.getStatus() != null) {
+            reservation.setReservationStatus(dto.getStatus());
         }
         return reservation;
     }

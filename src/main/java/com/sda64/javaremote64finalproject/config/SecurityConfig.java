@@ -24,15 +24,11 @@ public class SecurityConfig implements WebMvcConfigurer {
     private final AuthenticationProvider authenticationProvider;
 
 
-//    .hasRole(Role.ADMIN.toString()
-
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                //                .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/login").permitAll().anyRequest().authenticated())
-
-//                .authorizeHttpRequests((req) -> req.requestMatchers("/api/auth/**").permitAll().anyRequest().authenticated())
-                .authorizeHttpRequests((req) -> req.requestMatchers("/**").permitAll().anyRequest().authenticated())
+                .authorizeHttpRequests((req) -> req.requestMatchers("/api/auth/**", "/car/availablecars", "/car/{id}", "/car").permitAll()
+                        .anyRequest().authenticated())
                 .cors(withDefaults())
                 .csrf(AbstractHttpConfigurer::disable)
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))

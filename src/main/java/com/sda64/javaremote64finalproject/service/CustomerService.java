@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.awt.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -94,18 +93,18 @@ public class CustomerService {
     }
 
 
-    public String uploadImage(MultipartFile file) throws IOException {
-        Customer customer = customerRepository.save(Customer.builder()
-                .firstName(file.getOriginalFilename())
-                .email(file.getContentType())
-                .image(ImageUtils.compressImage(file.getBytes()))
-                .build());
-
-        if (customer != null) {
-            return "file uploaded successfully: " + file.getOriginalFilename();
-        }
-        return null;
-    }
+//    public String uploadImage(MultipartFile file) throws IOException {
+//        Customer customer = customerRepository.save(Customer.builder()
+//                .firstName(file.getOriginalFilename())
+//                .email(file.getContentType())
+//                .image(ImageUtils.compressImage(file.getBytes()))
+//                .build());
+//
+//        if (customer != null) {
+//            return "file uploaded successfully: " + file.getOriginalFilename();
+//        }
+//        return null;
+//    }
 
     public byte[] downloadImage(String firstName) {
         Optional<Customer> dbCustomer = customerRepository.findByFirstName(firstName);
@@ -113,12 +112,57 @@ public class CustomerService {
         return images;
     }
 
-    public String updateCustomerImage(Long id, MultipartFile file) throws IOException {
-        Customer customer = customerRepository
-                .findByUserId(id);
+    public void updateCustomerImage(Long id, MultipartFile file) throws IOException {
+        Customer customer = customerRepository.findByUserId(id);
 
-        customer.setImage(ImageUtils.decompressImage(file.getBytes()));
+        customer.setImage(ImageUtils.compressImage(file.getBytes()));
         customerRepository.save(customer);
-        return "customer updated";
+    }
+
+//    public byte[] getCustomerImage(Long customerId) {
+//        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+//        if (customerOptional.isPresent()) {
+//            Customer customer = customerOptional.get();
+//            return customer.getImage();
+//        }
+//        return null;
+//    }
+
+//    public byte[] getCustomerImage(Long customerId) {
+//        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+//        if (customerOptional.isPresent()) {
+//            return customerOptional.get().getImage();
+//        } else {
+//            throw new RuntimeException("Customer not found with id: " + customerId);
+//        }
+//    }
+public String uploadImage(MultipartFile file) throws IOException {
+    byte[] originalImageData = file.getBytes();
+    byte[] compressedImageData = ImageUtils.compressImage(originalImageData);
+
+    // Logging for debugging
+    System.out.println("Original Image Size: " + originalImageData.length);
+    System.out.println("Compressed Image Size: " + compressedImageData.length);
+
+    Customer customer = customerRepository.save(Customer.builder()
+            .firstName(file.getOriginalFilename())
+            .email(file.getContentType())
+            .image(compressedImageData)
+            .build());
+
+    if (customer != null) {
+        return "File uploaded successfully: " + file.getOriginalFilename();
+    }
+    return "File upload failed";
+}
+
+    public byte[] getCustomerImage(Long customerId) {
+        Optional<Customer> customerOptional = customerRepository.findById(customerId);
+        if (customerOptional.isPresent()) {
+            byte[] compressedImageData = customerOptional.get().getImage();
+            return ImageUtils.decompressImage(compressedImageData);
+        } else {
+            throw new RuntimeException("Customer not found with id: " + customerId);
+        }
     }
 }

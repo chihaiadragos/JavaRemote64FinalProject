@@ -82,7 +82,7 @@ public class ReservationService {
 //        if (reservationDto.getReservationStatus() != null && !entityReservation.getReservationStatus().equals(reservationDto.getReservationStatus())) {
 //            entityReservation.setReservationStatus(reservationDto.getReservationStatus());
 //        }
-        entityReservation.setReservationStatus(reservationDto.getReservationStatus());
+        entityReservation.setReservationStatus(reservationDto.getStatus());
         return reservationMapper.convertToDto(reservationRepository.save(entityReservation));
     }
 

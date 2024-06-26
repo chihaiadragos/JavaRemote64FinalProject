@@ -21,5 +21,5 @@ public class ReservationDto {
     private BranchDto branch;
 //    private BranchDto branchReturn;
     private Double amount;
-    private ReservationStatus reservationStatus;
+    private ReservationStatus status;
 }

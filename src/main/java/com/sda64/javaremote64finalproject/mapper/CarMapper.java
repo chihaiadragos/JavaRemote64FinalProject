@@ -36,6 +36,7 @@ public class CarMapper implements Mapper<Car, CarDto>{
         carDto.setMileage(entity.getMileage());
         carDto.setAmount(entity.getAmount());
         carDto.setImageUrl(entity.getImageUrl());
+        carDto.setStatus(entity.getStatus());
         carDto.setBranch(branchMapper.convertToDto(entity.getBranch()));
 
         return carDto;
