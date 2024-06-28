@@ -1,14 +1,12 @@
 package com.sda64.javaremote64finalproject.controller;
 
-import com.sda64.javaremote64finalproject.dto.AuthenticationResponse;
-import com.sda64.javaremote64finalproject.dto.LoginRequest;
-import com.sda64.javaremote64finalproject.dto.RegisterRequest;
+import com.sda64.javaremote64finalproject.dto.AuthenticationDto;
+import com.sda64.javaremote64finalproject.dto.LoginDto;
+import com.sda64.javaremote64finalproject.dto.RegisterDto;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
-import com.sda64.javaremote64finalproject.exception.InvalidBodyException;
 import com.sda64.javaremote64finalproject.service.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,9 +24,9 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<?> register(@RequestBody RegisterDto registerDto) {
         try {
-            authenticationService.register(registerRequest);
+            authenticationService.register(registerDto);
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.NOT_ACCEPTABLE);
@@ -37,8 +35,8 @@ public class AuthenticationController {
 
 
     @PostMapping("/login")
-    public ResponseEntity<AuthenticationResponse> login(@RequestBody LoginRequest loginRequest) throws EntityNotFoundException {
-            return ResponseEntity.ok(authenticationService.authenticate(loginRequest));
+    public ResponseEntity<AuthenticationDto> login(@RequestBody LoginDto loginDto) throws EntityNotFoundException {
+        return ResponseEntity.ok(authenticationService.authenticate(loginDto));
 
     }
 

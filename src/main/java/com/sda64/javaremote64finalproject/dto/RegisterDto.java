@@ -8,13 +8,12 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RegisterRequest {
+public class RegisterDto {
     private String firstName;
     private String lastName;
     private String address;
     private String email;
     private String password;
-//    private String image;
     private String branch;
     private AccountType accountType;
 }

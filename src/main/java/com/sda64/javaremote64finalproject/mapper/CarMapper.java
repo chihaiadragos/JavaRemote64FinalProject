@@ -63,9 +63,7 @@ public class CarMapper implements Mapper<Car, CarDto>{
         car.setColor(dto.getColor());
         car.setMileage(dto.getMileage());
         car.setAmount(dto.getAmount());
-        if (dto.getStatus() == null) {
-            car.setStatus(EntityStatus.AVAILABLE);
-        }
+        car.setStatus(dto.getStatus());
         car.setImageUrl(dto.getImageUrl());
         if (dto.getBranch().getId() != null) {
             BranchDto branchDto = branchService.findById(dto.getBranch().getId());
