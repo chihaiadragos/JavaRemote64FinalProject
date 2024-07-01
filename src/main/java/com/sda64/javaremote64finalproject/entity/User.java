@@ -20,13 +20,18 @@ public class User implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     private String email;
+
     private String password;
+
     @Enumerated(EnumType.STRING)
     private AccountType accountType;
+
     @OneToOne(mappedBy = "user")
     @JoinColumn(name = "employee_id")
     private Employee employee;
+
     @OneToOne(mappedBy = "user")
     @JoinColumn(name = "customer_id")
     private Customer customer;

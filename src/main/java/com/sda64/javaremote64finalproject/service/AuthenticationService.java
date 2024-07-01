@@ -1,8 +1,8 @@
 package com.sda64.javaremote64finalproject.service;
 
-import com.sda64.javaremote64finalproject.dto.AuthenticationResponse;
-import com.sda64.javaremote64finalproject.dto.LoginRequest;
-import com.sda64.javaremote64finalproject.dto.RegisterRequest;
+import com.sda64.javaremote64finalproject.dto.AuthenticationDto;
+import com.sda64.javaremote64finalproject.dto.LoginDto;
+import com.sda64.javaremote64finalproject.dto.RegisterDto;
 import com.sda64.javaremote64finalproject.entity.Branch;
 import com.sda64.javaremote64finalproject.entity.Customer;
 import com.sda64.javaremote64finalproject.entity.Employee;
@@ -15,7 +15,6 @@ import com.sda64.javaremote64finalproject.repository.CustomerRepository;
 import com.sda64.javaremote64finalproject.repository.EmployeeRepository;
 import com.sda64.javaremote64finalproject.repository.UserRepository;
 import com.sda64.javaremote64finalproject.util.ImageUtils;
-import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -49,7 +48,7 @@ public class AuthenticationService {
         this.employeeRepository = employeeRepository;
     }
 
-    public void register(RegisterRequest request) throws EntityNotFoundException, IOException, EmailAlreadyExistException {
+    public void register(RegisterDto request) throws EntityNotFoundException, IOException, EmailAlreadyExistException {
 
         if (userRepository.findByEmail(request.getEmail()).isPresent()) {
             throw new EmailAlreadyExistException(String.format("User with email %s already exist", request.getEmail()));
@@ -91,11 +90,9 @@ public class AuthenticationService {
             }
             employeeRepository.save(employee);
         }
-
-//        return AuthenticationResponse.builder().token(jwtToken).build();
     }
 
-    public AuthenticationResponse authenticate(LoginRequest request) throws EntityNotFoundException {
+    public AuthenticationDto authenticate(LoginDto request) throws EntityNotFoundException {
 
 
         try {
@@ -112,7 +109,7 @@ public class AuthenticationService {
         var user = userRepository.findByEmail(request.getEmail()).orElseThrow();
         var jwtToken = jwtService.generateToken(user);
 
-        return AuthenticationResponse.builder()
+        return AuthenticationDto.builder()
                 .accountType(user.getAccountType())
                 .id(user.getId())
                 .fullName(user.getFullName())
