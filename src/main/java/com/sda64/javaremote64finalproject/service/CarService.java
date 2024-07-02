@@ -50,14 +50,10 @@ public class CarService {
 
         if (carDto.getBrand() != null && !entityCar.getBrand().equalsIgnoreCase(carDto.getBrand())) {
             entityCar.setBrand(carDto.getBrand());
-        } else {
-            entityCar.setModel("unknown");
         }
 
         if (carDto.getModel() != null && !entityCar.getModel().equalsIgnoreCase(carDto.getModel())) {
             entityCar.setModel(carDto.getModel());
-        } else {
-            entityCar.setModel("unknown");
         }
         if (carDto.getCarBodyType() != null && entityCar.getCarBodyType().compareTo(carDto.getCarBodyType()) != 0) {
             entityCar.setCarBodyType(carDto.getCarBodyType());

@@ -30,6 +30,7 @@ public class Car {
     private Integer mileage;
 
     private Integer amount;
+
     @Enumerated(EnumType.STRING)
     private EntityStatus status;
 

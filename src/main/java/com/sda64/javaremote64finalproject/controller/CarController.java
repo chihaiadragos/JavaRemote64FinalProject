@@ -17,6 +17,7 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200/")
 public class CarController {
     private final CarService carService;
+
     @Autowired
     public CarController(CarService carService) {
         this.carService = carService;
@@ -55,18 +56,19 @@ public class CarController {
     public ResponseEntity<List<CarDto>> getAllAvailableCars() {
         return new ResponseEntity<>(carService.findAllAvailable(), HttpStatus.OK);
     }
+
     @GetMapping("/getByBodyAndColor")
     public ResponseEntity<List<CarDto>> getAllCarsByCarBodyTypeAndColor(@RequestBody CarDto carDto) {
         return new ResponseEntity<>(carService.findAllByCarBodyTypeAndColor(carDto.getCarBodyType(), carDto.getColor()), HttpStatus.OK);
     }
+
     @GetMapping("/getByBranchId/{branchId}")
     public ResponseEntity<List<CarDto>> getAllByBranchId(@PathVariable Long branchId) {
         return new ResponseEntity<>(carService.getCarsByBranchId(branchId), HttpStatus.OK);
     }
-    //best practice "/getallcars" <- nu camel case, se scriu cu litere mici
-    //endpointurile mele sunt search by payload ...
+
     @PostMapping("/availablecarsduringperiod")
-    public ResponseEntity<List<CarDto>> getAvailableCars(@RequestBody PeriodDto periodDto) throws EntityNotFoundException {
+    public ResponseEntity<List<CarDto>> getAvailableCars(@RequestBody PeriodDto periodDto) {
         return new ResponseEntity<>(carService.getAvailableCars(periodDto), HttpStatus.OK);
     }
 }
