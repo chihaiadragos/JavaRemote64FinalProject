@@ -19,7 +19,6 @@ public class ReservationDto {
     private LocalDate dateFrom;
     private LocalDate dateTo;
     private BranchDto branch;
-//    private BranchDto branchReturn;
     private Double amount;
     private ReservationStatus status;
 }

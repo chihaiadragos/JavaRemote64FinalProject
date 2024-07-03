@@ -21,6 +21,7 @@ import java.util.List;
 @CrossOrigin("http://localhost:4200/")
 public class ReservationController {
     private final ReservationService reservationService;
+
     @Autowired
     public ReservationController(ReservationService reservationService) {
         this.reservationService = reservationService;
@@ -39,10 +40,11 @@ public class ReservationController {
     }
 
     @PutMapping("/update")
-    public ResponseEntity<ReservationDto> updateReservation(@RequestBody ReservationDto reservationDto) throws EntityNotFoundException {
+    public ResponseEntity<ReservationDto> updateReservation(@RequestBody ReservationDto reservationDto) throws EntityNotFoundException, InvalidBodyException {
         ReservationDto reservationUpdated = reservationService.updateReservation(reservationDto);
         return new ResponseEntity<>(reservationUpdated, HttpStatus.OK);
     }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteReservation(@PathVariable Long id) throws EntityNotFoundException {
         ReservationDto deletedReservation = reservationService.deleteReservation(id);
@@ -53,14 +55,17 @@ public class ReservationController {
     public ResponseEntity<List<ReservationDto>> getAllReservations() {
         return new ResponseEntity<>(reservationService.findAll(), HttpStatus.OK);
     }
+
     @GetMapping("/getByCustomerId/{customerId}")
     public ResponseEntity<List<ReservationDto>> getAllByCustomerId(@PathVariable Long customerId) {
         return new ResponseEntity<>(reservationService.getReservationsByCustomerId(customerId), HttpStatus.OK);
     }
+
     @GetMapping("/getByCarId/{carId}")
     public ResponseEntity<List<ReservationDto>> getAllByCarId(@PathVariable Long carId) {
         return new ResponseEntity<>(reservationService.getReservationsByCarId(carId), HttpStatus.OK);
     }
+
     @GetMapping("/getByBranchId/{branchId}")
     public ResponseEntity<List<ReservationDto>> getAllByBranchId(@PathVariable Long branchId) {
         return new ResponseEntity<>(reservationService.getReservationsByBranchId(branchId), HttpStatus.OK);

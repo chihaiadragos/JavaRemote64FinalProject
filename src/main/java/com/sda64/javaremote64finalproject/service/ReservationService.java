@@ -1,5 +1,6 @@
 package com.sda64.javaremote64finalproject.service;
 
+import com.sda64.javaremote64finalproject.dto.AmountDto;
 import com.sda64.javaremote64finalproject.dto.PeriodDto;
 import com.sda64.javaremote64finalproject.dto.ReservationDto;
 import com.sda64.javaremote64finalproject.entity.Car;
@@ -8,8 +9,10 @@ import com.sda64.javaremote64finalproject.entity.Reservation;
 import com.sda64.javaremote64finalproject.enums.ReservationStatus;
 import com.sda64.javaremote64finalproject.exception.EntityNotFoundException;
 import com.sda64.javaremote64finalproject.exception.InsuficientFoundsException;
+import com.sda64.javaremote64finalproject.exception.InvalidBodyException;
 import com.sda64.javaremote64finalproject.mapper.ReservationMapper;
 import com.sda64.javaremote64finalproject.repository.CarRepository;
+import com.sda64.javaremote64finalproject.repository.CustomerRepository;
 import com.sda64.javaremote64finalproject.repository.ReservationRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,12 +24,14 @@ import java.util.*;
 public class ReservationService {
     private final ReservationRepository reservationRepository;
     private final ReservationMapper reservationMapper;
+    private final CustomerService customerService;
     private final CarRepository carRepository;
 
     @Autowired
-    public ReservationService(ReservationRepository reservationRepository, ReservationMapper reservationMapper, CarRepository carRepository) {
+    public ReservationService(ReservationRepository reservationRepository, ReservationMapper reservationMapper, CustomerService customerService, CarRepository carRepository) {
         this.reservationRepository = reservationRepository;
         this.reservationMapper = reservationMapper;
+        this.customerService = customerService;
         this.carRepository = carRepository;
     }
 
@@ -61,7 +66,7 @@ public class ReservationService {
         return reservationMapper.convertToDto(entityReservation);
     }
 
-    public ReservationDto updateReservation(ReservationDto reservationDto) throws EntityNotFoundException {
+    public ReservationDto updateReservation(ReservationDto reservationDto) throws EntityNotFoundException, InvalidBodyException {
         Reservation entityReservation = reservationRepository
                 .findById(reservationDto.getId())
                 .orElseThrow(() -> new EntityNotFoundException(String.format("Reservation with %s does not exist", reservationDto.getId())));
@@ -79,10 +84,11 @@ public class ReservationService {
         if (reservationDto.getDateTo() != null && !entityReservation.getDateTo().equals(reservationDto.getDateTo())) {
             entityReservation.setDateTo(reservationDto.getDateTo());
         }
-//        if (reservationDto.getReservationStatus() != null && !entityReservation.getReservationStatus().equals(reservationDto.getReservationStatus())) {
-//            entityReservation.setReservationStatus(reservationDto.getReservationStatus());
-//        }
         entityReservation.setReservationStatus(reservationDto.getStatus());
+        if (ReservationStatus.REFUNDED.equals(reservationDto.getStatus())){
+            AmountDto amountDto = new AmountDto(entityReservation.getAmount());
+            customerService.addMoney(entityReservation.getCustomer().getId(), amountDto);
+        }
         return reservationMapper.convertToDto(reservationRepository.save(entityReservation));
     }
 
@@ -140,7 +146,7 @@ public class ReservationService {
         List<Reservation> reservationList = reservationRepository.findAll();
         List<Reservation> availableReservations = reservationList.stream()
                 .filter(reservation ->  reservation.getReservationStatus() == ReservationStatus.DECLINED ||
-                                        reservation.getReservationStatus() == ReservationStatus.COMPLETED)
+                                        reservation.getReservationStatus() == ReservationStatus.REFUNDED)
                 .toList();
 
         return availableReservations.stream().filter(reservation -> reservation.getDateFrom().isEqual(periodDtoFrom)

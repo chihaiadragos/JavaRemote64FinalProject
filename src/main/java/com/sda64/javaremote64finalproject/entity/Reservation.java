@@ -25,6 +25,7 @@ public class Reservation {
     private Car car;
 
     private LocalDate dateFrom;
+
     private LocalDate dateTo;
 
     @ManyToOne
@@ -32,10 +33,6 @@ public class Reservation {
     @JsonIgnore
     private Branch branch;
 
-//    @ManyToOne
-//    @JoinColumn(name = "branch_return_id")
-//    @JsonIgnore
-//    private Branch branchReturn;
 
     private Double amount;
     @Column(name = "reservation_status")
