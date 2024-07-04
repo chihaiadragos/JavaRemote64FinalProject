@@ -81,7 +81,6 @@ public class CustomerService {
     }
 
     public CustomerDto addMoney(Long id, AmountDto amount) throws EntityNotFoundException, InvalidBodyException {
-        //validare pe amount sa fie pozitiv -> exceptie
         if (amount.getAmount() < 0) {
             throw new InvalidBodyException(String.format("Value can not be negative: your value = %s", amount.getAmount()));
         }
@@ -92,19 +91,6 @@ public class CustomerService {
         return customerMapper.convertToDto(customerRepository.save(entityCustomer));
     }
 
-
-//    public String uploadImage(MultipartFile file) throws IOException {
-//        Customer customer = customerRepository.save(Customer.builder()
-//                .firstName(file.getOriginalFilename())
-//                .email(file.getContentType())
-//                .image(ImageUtils.compressImage(file.getBytes()))
-//                .build());
-//
-//        if (customer != null) {
-//            return "file uploaded successfully: " + file.getOriginalFilename();
-//        }
-//        return null;
-//    }
 
     public byte[] downloadImage(String firstName) {
         Optional<Customer> dbCustomer = customerRepository.findByFirstName(firstName);
@@ -119,23 +105,6 @@ public class CustomerService {
         customerRepository.save(customer);
     }
 
-//    public byte[] getCustomerImage(Long customerId) {
-//        Optional<Customer> customerOptional = customerRepository.findById(customerId);
-//        if (customerOptional.isPresent()) {
-//            Customer customer = customerOptional.get();
-//            return customer.getImage();
-//        }
-//        return null;
-//    }
-
-//    public byte[] getCustomerImage(Long customerId) {
-//        Optional<Customer> customerOptional = customerRepository.findById(customerId);
-//        if (customerOptional.isPresent()) {
-//            return customerOptional.get().getImage();
-//        } else {
-//            throw new RuntimeException("Customer not found with id: " + customerId);
-//        }
-//    }
 public String uploadImage(MultipartFile file) throws IOException {
     byte[] originalImageData = file.getBytes();
     byte[] compressedImageData = ImageUtils.compressImage(originalImageData);

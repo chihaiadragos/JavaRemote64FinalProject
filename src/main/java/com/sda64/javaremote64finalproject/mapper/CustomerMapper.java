@@ -46,7 +46,6 @@ public class CustomerMapper implements Mapper<Customer, CustomerDto> {
         customer.setLastName(dto.getLastName());
         customer.setEmail(dto.getEmail());
         customer.setAddress(dto.getAddress());
-//        customer.setImage(dto.getImage());
         customer.setBalance(dto.getBalance());
 
         return customer;

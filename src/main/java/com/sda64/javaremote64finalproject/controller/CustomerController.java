@@ -57,11 +57,13 @@ public class CustomerController {
     public ResponseEntity<List<CustomerDto>> getAllCustomers() {
         return new ResponseEntity<>(customerService.findAll(), HttpStatus.OK);
     }
+
     @PutMapping("/{id}/addMoney")
     public ResponseEntity<CustomerDto> addMoney(@RequestBody AmountDto amountDto, @PathVariable Long id) throws EntityNotFoundException, InvalidBodyException {
         CustomerDto customerUpdated = customerService.addMoney(id, amountDto);
         return new ResponseEntity<>(customerUpdated, HttpStatus.OK);
     }
+
     @ExceptionHandler(value = InvalidBodyException.class)
     ResponseEntity<Object> handleIllegalRequests(InvalidBodyException ex) {
         return new ResponseEntity<>("Value is negative", HttpStatus.NOT_ACCEPTABLE);
@@ -78,7 +80,7 @@ public class CustomerController {
     }
 
     @PostMapping("/updateimage/{id}")
-    public ResponseEntity<?> updateCustomerImage(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws  EntityNotFoundException{
+    public ResponseEntity<?> updateCustomerImage(@PathVariable Long id, @RequestParam("file") MultipartFile file) throws EntityNotFoundException {
         try {
             customerService.updateCustomerImage(id, file);
             CustomerDto customerFound = customerService.findByUserId(id);
@@ -118,8 +120,6 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
         }
     }
-
-
 
 
 //    @GetMapping("/{id}/image")
